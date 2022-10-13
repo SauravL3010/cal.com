@@ -1,6 +1,7 @@
 import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { isValidPhoneNumber } from "libphonenumber-js";
+import Link from "next/link";
 import { useEffect } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
@@ -82,6 +83,8 @@ export const EditLocationDialog = (props: ISetLocationDialog) => {
   } = props;
   const { t } = useLocale();
   const locationsQuery = trpc.useQuery(["viewer.locationOptions"]);
+
+  console.log(selection, booking);
 
   useEffect(() => {
     if (selection) {
@@ -308,6 +311,20 @@ export const EditLocationDialog = (props: ISetLocationDialog) => {
             }}
           />
           {selectedLocation && LocationOptions}
+          {!selection && (
+            <div className="mt-5">
+              <p className="text-sm text-gray-500">
+                {t("cannot_find_the_right_video_app")}
+                <Link href="/apps/categories/video">
+                  <a target="_blank" className="text-blue-500">
+                    {" "}
+                    {t("app_store")}
+                  </a>
+                </Link>
+                .
+              </p>
+            </div>
+          )}
           <div className="mt-4 flex justify-end space-x-2">
             <Button
               onClick={() => {
